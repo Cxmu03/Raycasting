@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include <math.h>
 
 #define STR(a) #a
@@ -23,6 +24,11 @@ inline T MapTo(T v, T r1, T r2, T e1, T e2) {
 template <typename T>
 inline bool InRange(T v, T r1, T r2) {
     return v >= r1 && v <= r2;
+}
+
+template <typename T>
+inline bool HashsetContains(std::unordered_set<T> set, T val) {
+    return set.find(val) != set.end();
 }
 
 void rotate(float theta, float& x, float& y, float pivotX = 0.f, float pivotY = 0.f);
