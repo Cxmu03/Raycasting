@@ -28,12 +28,6 @@ namespace Map {
                 }
             }
         }
-        for (int j = 0; j < size.height; j++) {
-            for (int i = 0; i < size.width; i++) {
-                std::cout << (int)completeMap[j][i]; 
-            }
-            std::cout << std::endl;
-        }
         return std::make_tuple(completeMap, size);
     }
 };

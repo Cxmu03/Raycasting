@@ -48,7 +48,6 @@ Game::Game() : m_WindowSize({ 1920, 1080}), m_Settings(s_DefaultGameSettings) {
     m_Renderer.Initialize(m_Window);
     //Initializing Members
     std::tie(m_Map, m_MapSize) = Map::Read("Maps/Map1.txt");
-    std::cout << m_MapSize;
     m_PlayerPosition = m_Settings.PlayerPosition;
     m_PlayerAngle = m_Settings.PlayerAngle;
     m_PlayerSpeed = m_Settings.PlayerSpeed;
