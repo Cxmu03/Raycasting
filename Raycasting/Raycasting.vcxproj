@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Maps\Map1.txt" />
+    <Text Include="Maps\Map2.txt" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="vendor\glfw\lib\glfw3.lib" />

@@ -28,6 +28,10 @@ struct Vector2 {
         return {x * scalar, y * scalar};
     }
 
+    Vector2<T> operator /(const T scalar) const {
+        return {x / scalar, y / scalar};
+    }
+
     void normalize() {
         double length = this->length();
         x = static_cast<T>(static_cast<double>(x) / length);

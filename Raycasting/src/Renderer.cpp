@@ -19,7 +19,7 @@ void Renderer::Initialize() {
     glGenBuffers(1, &m_EBO);
 }
 
-void Renderer::DrawRectangle(Vector2<float> position, Size<float> size, Color fillColor) {
+void Renderer::DrawQuad(Vector2<float> position, Size<float> size, Color fillColor) {
     int windowWidth, windowHeight;
     glfwGetWindowSize(m_Window, &windowWidth, &windowHeight);
 

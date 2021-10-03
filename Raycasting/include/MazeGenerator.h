@@ -10,8 +10,7 @@
 
 class MazeGenerator {
 public:
-    template <size_t width, size_t height>
-    static std::vector<std::vector<int>> Automata() {
+    static std::vector<std::vector<int>> Automata(size_t width, size_t height) {
         std::vector<std::vector<int>> board(height, std::vector<int>(width, 0));
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

@@ -1,9 +1,7 @@
 #include "../include/Color.h"
 
-void Color::operator /= (uint8_t divisor) {
-    r /= divisor;
-    g /= divisor;
-    b /= divisor;
+Color Color::operator / (uint8_t divisor) {
+    return Color(r / divisor, g / divisor, b / divisor);
 }
 
 const Color Color::Red = {255, 0, 0};

@@ -9,7 +9,7 @@ struct Color {
     uint8_t g;
     uint8_t b;
 
-    void operator /=(uint8_t divisor);
+    Color operator /(uint8_t divisor);
 
     static const Color Red;
     static const Color Green;

@@ -2,34 +2,38 @@
 #include <sstream>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 #include "../include/Map.h"
 #include "../include/Utilities.h"
 
-Map::Map(const char* path) {
-    Read(path);
-}
+namespace Map {
+    std::tuple<std::vector<std::vector<uint8_t>>, Size<size_t>> Read(const char* filename) {
+        std::vector<std::vector<uint8_t>> completeMap;
+        Size<size_t> size;
+        std::string mapString = ReadFile(filename);
+        std::string out;
+        std::ranges::copy_if(mapString, std::back_inserter(out), [](char c) { return c != ' '; });
+        mapString = out;
+        auto lines = SplitString(mapString, '\n');
+        size.height = lines.size();
+        size.width = lines[0].size();
 
-void Map::Read(const char* filename) {
-    m_MapState.clear();
-    std::string mapString = ReadFile(filename);
-    std::string out;
-    std::ranges::copy_if(mapString, std::back_inserter(out), [](char c) { return c != ' '; });
-    mapString = out;
-    auto lines = SplitString(mapString, '\n');
-    m_MapSize.height = lines.size();
-    m_MapSize.width = lines[0].size();
-    for (const auto& line : lines) {
-        for (const auto character : line) {
-            if (isdigit(character)) {
-                uint8_t value = character - '0';
-                m_MapState.emplace_back(character);
+        for (int i = 0; i < lines.size(); i++) {
+            completeMap.emplace_back(std::vector<uint8_t>(size.width, 0));
+            for (int j = 0; j < lines[i].size(); j++) {
+                if (isdigit(lines[i][j])) {
+                    uint8_t value = lines[i][j] - '0';
+                    completeMap[i][j] = value;
+                }
             }
         }
+        for (int j = 0; j < size.height; j++) {
+            for (int i = 0; i < size.width; i++) {
+                std::cout << (int)completeMap[j][i]; 
+            }
+            std::cout << std::endl;
+        }
+        return std::make_tuple(completeMap, size);
     }
-}
-
-std::vector<int8_t> Map::operator[](size_t index) {
-    auto startIterator = m_MapState.begin() + (index * m_MapSize.width);
-    return {startIterator, startIterator + m_MapSize.width};
-}
+};

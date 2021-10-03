@@ -27,6 +27,11 @@ inline bool InRange(T v, T r1, T r2) {
 }
 
 template <typename T>
+inline bool InRangeEx(T v, T r1, T r2) {
+    return v > r1 && v < r2;
+}
+
+template <typename T>
 inline bool HashsetContains(std::unordered_set<T> set, T val) {
     return set.find(val) != set.end();
 }

@@ -12,7 +12,7 @@ public:
     Renderer() : Renderer(nullptr) {}
     Renderer(GLFWwindow* window);
 public:
-    void DrawRectangle(Vector2<float> position, Size<float> size, Color fillColor);
+    void DrawQuad(Vector2<float> position, Size<float> size, Color fillColor);
     void Initialize();
     void Initialize(GLFWwindow* window);
 private:
