@@ -7,12 +7,12 @@
 #include "../include/Utilities.h"
 
 const GameSettings Game::s_DefaultGameSettings = {
-    {20.f, 20.f},  //Player Position
+    {1, 1},  //Player Position
     {0, 0, 0},     //Sky Color
     {99, 97, 96},  //Floor Color
     {1920},        //Columns
     0.1f,          //Step Size
-    -pi_halves,    //Player Angle
+    pi_halves / 2,    //Player Angle
     pi_halves,     //FOV
     4.f,           //Zoom Scaling Factor
     50,            //Max View Distance
@@ -46,8 +46,8 @@ Game::Game() : m_WindowSize({ 1920, 1080}), m_Settings(s_DefaultGameSettings) {
     glClearColor(0.f, 0.f, 0.f, 1.0f);
     m_Shader.Initialize();
     m_Renderer.Initialize(m_Window);
-    //Initializing Members
-    std::tie(m_Map, m_MapSize) = Map::Read("Maps/Map1.txt");
+
+    std::tie(m_Map, m_MapSize) = MapReader::Read("Maps/Map1.txt");
     m_PlayerPosition = m_Settings.PlayerPosition;
     m_PlayerAngle = m_Settings.PlayerAngle;
     m_PlayerSpeed = m_Settings.PlayerSpeed;
@@ -61,9 +61,6 @@ void Game::Start() {
     double lastMouseX;
     glfwGetCursorPos(m_Window, &lastMouseX, nullptr);
 
-    //std::fstream out;
-    //out.open("Logs/Log1.txt", std::ios::out);
-    //std::cout << "File created" << std::endl;
     while (!glfwWindowShouldClose(m_Window)) {
         float time = float(glfwGetTime());
         float sR = MapTo(sinf(time * 0.1), -1.f, 1.f, 0.f, 135.f);
@@ -71,11 +68,9 @@ void Game::Start() {
         float sB = MapTo(sinf(time * 0.1), -1.f, 1.f, 0.f, 250.f);
         glClearColor(MAPC(sR), MAPC(sG), MAPC(sB), 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        m_Renderer.DrawQuad({ 0, 0 }, { 1920, 1080 }, {(uint8_t)sR, (uint8_t)sG, (uint8_t)sB});
+        //m_Renderer.DrawQuad({ 0, 0 }, { 1920, 1080 }, {(uint8_t)sR, (uint8_t)sG, (uint8_t)sB});
         m_DeltaTime = (static_cast<double>((std::chrono::high_resolution_clock::now() - t1).count())) / (1.0E9);
-        //std::cout << m_DeltaTime << std::endl;
         t1 = std::chrono::high_resolution_clock::now();
-        //std::cout << fps << std::endl;
         ProcessInput();
 
         Vector2<double> currMousePos;
@@ -93,8 +88,8 @@ void Game::Start() {
         lastMouseX = currMousePos.x;
 
         for (int x = 0; x < m_WindowSize.width; x++) {
-            double distToWall = 0.;
-            double angle = (m_PlayerAngle - (m_FOV / 2.0f)) + ((double)x / (double)m_WindowSize.width) * m_FOV;
+            float distToWall = 0.;
+            float angle = (m_PlayerAngle - (m_FOV / 2.0f)) + ((float)x / (float)m_WindowSize.width) * m_FOV;
             bool hitWall = false;
             Vector2 rayDir = {m_Settings.StepSize * cosf(angle), m_Settings.StepSize * sinf(angle)};
             Vector2 rayPos(m_PlayerPosition);
@@ -106,14 +101,12 @@ void Game::Start() {
                     distToWall = m_Settings.MaxViewDist;
                 }
                 else {
-                    if (InRangeEx(int(rayPos.y), 0, int(m_Map.size())) && InRangeEx(int(rayPos.x), 0, int(m_Map[0].size())) && m_Map[(int)rayPos.y][(int)rayPos.x] > 0) {
-                        //out << "Value: " << m_Map[(int)rayPos.y][(int)rayPos.x] << std::endl;
+                    if (InRange(int(rayPos.y), 0, int(m_Map.size())) && InRange(int(rayPos.x), 0, int(m_Map[0].size())) && m_Map[(int)rayPos.y][(int)rayPos.x] > 0) {
                         hitWall = true;
                     }
                 }
             }
             double wallHeight = static_cast<double>(m_WindowSize.height) / distToWall;
-            //out << "Height: " << wallHeight << std::endl;
             if (m_ZoomedIn) {
                 wallHeight *= 4.f;
             }
@@ -148,15 +141,11 @@ void Game::Start() {
                 }
             }
             m_Renderer.DrawQuad({ (float)x, (float)(wallY0 + wallHeight) }, { 1, (((float)(m_WindowSize.height - wallHeight)) / 2.f) }, m_Settings.FloorColor);
-            //Boden (99, 97, 96)
         }
 
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
-        //break;
     }
-    //out << fflush;
-    //out.close();
 }
 
 void Game::CreateShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {

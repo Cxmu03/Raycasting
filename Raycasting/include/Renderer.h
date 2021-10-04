@@ -15,8 +15,11 @@ public:
     void DrawQuad(Vector2<float> position, Size<float> size, Color fillColor);
     void Initialize();
     void Initialize(GLFWwindow* window);
+
+public:
+    GLFWwindow* Window;
+
 private:
-    GLFWwindow* m_Window;
     unsigned m_VAO, m_VBO, m_EBO;
 
     static const unsigned s_QuadIndices[];

@@ -47,8 +47,7 @@ private:
 
     GameSettings m_Settings;
 
-    /*Map m_Map;*/
-    std::vector<std::vector<uint8_t>> m_Map;
+    Map m_Map;
     Size<size_t> m_MapSize;
     Vector2<float> m_PlayerPosition;
     bool m_ZoomedIn;

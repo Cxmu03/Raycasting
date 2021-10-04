@@ -6,10 +6,10 @@ const unsigned Renderer::s_QuadIndices[] = {
     2, 3, 0
 };
 
-Renderer::Renderer(GLFWwindow* window) : m_Window(window) { }
+Renderer::Renderer(GLFWwindow* window) : Window(window) { }
 
 void Renderer::Initialize(GLFWwindow* window) {
-    m_Window = window;
+    Window = window;
     Initialize();
 }
 
@@ -21,7 +21,7 @@ void Renderer::Initialize() {
 
 void Renderer::DrawQuad(Vector2<float> position, Size<float> size, Color fillColor) {
     int windowWidth, windowHeight;
-    glfwGetWindowSize(m_Window, &windowWidth, &windowHeight);
+    glfwGetWindowSize(Window, &windowWidth, &windowHeight);
 
     float r = MapTo(static_cast<float>(fillColor.r), 0.f, 255.f, 0.f, 1.f);
     float g = MapTo(static_cast<float>(fillColor.g), 0.f, 255.f, 0.f, 1.f);

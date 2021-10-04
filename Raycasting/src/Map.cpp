@@ -7,9 +7,9 @@
 #include "../include/Map.h"
 #include "../include/Utilities.h"
 
-namespace Map {
-    std::tuple<std::vector<std::vector<uint8_t>>, Size<size_t>> Read(const char* filename) {
-        std::vector<std::vector<uint8_t>> completeMap;
+namespace MapReader {
+    std::tuple<Map, Size<size_t>> Read(const char* filename) {
+        Map completeMap;
         Size<size_t> size;
         std::string mapString = ReadFile(filename);
         std::string out;
