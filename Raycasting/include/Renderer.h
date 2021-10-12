@@ -11,6 +11,7 @@ class Renderer {
 public:
     Renderer() : Renderer(nullptr) {}
     Renderer(GLFWwindow* window);
+
 public:
     void DrawQuad(Vector2<float> position, Size<float> size, Color fillColor);
     void Initialize();

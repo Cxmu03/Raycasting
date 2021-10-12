@@ -11,7 +11,7 @@ const GameSettings Game::s_DefaultGameSettings = {
     {0, 0, 0},     //Sky Color
     {99, 97, 96},  //Floor Color
     {1920},        //Columns
-    0.1f,          //Step Size
+    0.056f,          //Step Size
     pi_halves / 2,    //Player Angle
     pi_halves,     //FOV
     4.f,           //Zoom Scaling Factor
@@ -56,9 +56,10 @@ Game::Game() : m_WindowSize({ 1920, 1080}), m_Settings(s_DefaultGameSettings) {
 }
 
 void Game::Start() {
-    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-    m_MapSize = { 24, 48 };
+    auto t1 = std::chrono::high_resolution_clock::now();
     double lastMouseX;
+    float columnWidth = (float)m_WindowSize.width / (float)m_Settings.Columns;
+    std::cout << columnWidth << std::endl;
     glfwGetCursorPos(m_Window, &lastMouseX, nullptr);
 
     while (!glfwWindowShouldClose(m_Window)) {
@@ -77,13 +78,13 @@ void Game::Start() {
         glfwGetCursorPos(m_Window, &currMousePos.x, &currMousePos.y);
         double deltaX = currMousePos.x - lastMouseX;
         m_PlayerAngle += deltaX * m_DeltaTime * 0.1;
-        if (deltaX > 0 && currMousePos.x > 1800) {
-            glfwSetCursorPos(m_Window, 200, currMousePos.y);
-            currMousePos.x = 200;
+        if (deltaX > 0 && currMousePos.x == 1919) {
+            glfwSetCursorPos(m_Window, 0, currMousePos.y);
+            currMousePos.x = 0;
         }
-        else if (deltaX < 0 && currMousePos.x < 120) {
-            glfwSetCursorPos(m_Window, 1720, currMousePos.y);
-            currMousePos.x = 1720;
+        else if (deltaX < 0 && currMousePos.x == 0) {
+            glfwSetCursorPos(m_Window, 1920, currMousePos.y);
+            currMousePos.x = 1920;
         }
         lastMouseX = currMousePos.x;
 
@@ -137,10 +138,10 @@ void Game::Start() {
                     currColor = currColor / 2;
                 }
                 if (distToWall < m_Settings.MaxViewDist) {
-                    m_Renderer.DrawQuad({ (float)x, (float)wallY0 }, { 1, (float)wallHeight }, currColor);
+                    m_Renderer.DrawQuad({ (float)(x * columnWidth), (float)wallY0 }, { columnWidth, (float)wallHeight }, currColor);
                 }
             }
-            m_Renderer.DrawQuad({ (float)x, (float)(wallY0 + wallHeight) }, { 1, (((float)(m_WindowSize.height - wallHeight)) / 2.f) }, m_Settings.FloorColor);
+            m_Renderer.DrawQuad({ (float)(x * columnWidth), (float)(wallY0 + wallHeight) }, { columnWidth, (((float)(m_WindowSize.height - wallHeight)) / 2.f) }, m_Settings.FloorColor);
         }
 
         glfwSwapBuffers(m_Window);

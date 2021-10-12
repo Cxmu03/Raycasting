@@ -2,6 +2,6 @@
 
 int main() {
     Game game;
-    game.CreateShaders("Shaders/shader.vert", "Shaders/shader.frag");
+    game.CreateShaders("shaders/shader.vert", "shaders/shader.frag");
     game.Start();
 }

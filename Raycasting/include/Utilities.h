@@ -17,22 +17,22 @@ constexpr float two_pi = 2 * pi;
 constexpr float pi_halves = pi / 2.f;
 
 template <typename T>
-inline T MapTo(T v, T r1, T r2, T e1, T e2) {
+constexpr inline T MapTo(T v, T r1, T r2, T e1, T e2) {
     return e1 + (((v - r1) / (r2 - r1)) * (e2 - e1));
 }
 
 template <typename T>
-inline bool InRange(T v, T r1, T r2) {
+constexpr inline bool InRange(T v, T r1, T r2) {
     return v >= r1 && v <= r2;
 }
 
 template <typename T>
-inline bool InRangeEx(T v, T r1, T r2) {
+constexpr inline bool InRangeEx(T v, T r1, T r2) {
     return v > r1 && v < r2;
 }
 
 template <typename T>
-inline bool HashsetContains(std::unordered_set<T> set, T val) {
+constexpr inline bool HashsetContains(std::unordered_set<T> set, T val) {
     return set.find(val) != set.end();
 }
 
